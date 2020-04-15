@@ -1,0 +1,45 @@
+Plecs {
+  Name          "PVcontroller"
+  Version       "3.5"
+  CircuitModel  "ContStateSpace"
+  StartTime     "0.0"
+  StopTime      "1.0"
+  Solver        "dopri"
+  MaxStep       "1e-3"
+  InitStep      "-1"
+  FixedStep     "1e-3"
+  Refine        "1"
+  ZCStepSize    "1e-9"
+  RelTol        "1e-3"
+  AbsTol        "-1"
+  TurnOnThreshold "0"
+  SyncFixedStepTasks "2"
+  UseSingleCommonBaseRate "2"
+  NegativeSwitchLossMsg "3"
+  InitializationCommands ""
+  InitialState  "1"
+  SystemState   ""
+  CodeGenTopologies "[]"
+  CodeGenParameterInlining "2"
+  CodeGenInliningExceptions "AAAACwAAAAAA"
+  CodeGenIntegerWordSize "32"
+  CodeGenAbsTimeUsageMsg "3"
+  CodeGenBaseName ""
+  CodeGenOutputDir ""
+  Schematic {
+    Location      [748, 64; 1600, 560]
+    ZoomFactor    1
+    SliderPosition [0, -10]
+    ShowBrowser   off
+    BrowserWidth  100
+    Component {
+      Type          VoltageSource
+      Name          "V"
+      Show          on
+      Position      [280, 180]
+      Direction     down
+      Flipped       on
+    }
+  }
+}
+DemoSignature "0j+dQQjcTl/3O3hgx0Bos9rK9R58S1QGHcufYMTj4h8="
