@@ -1,0 +1,54 @@
+%RES overproduction and Pmismatch DOPF
+ function[v2,PG2,C1,I21,I24,PL2,RESOVP2]=RESOVP_ad_bus2avg(v1,v2,v3,v4,B,i12,i42,PRESOVP2,PRESTOTAL,TSO_choice,PL4)
+PG2max= 0.333333;
+
+PG2last = 0.3;
+
+Iijmax= 0.8;
+
+G = [18,-18,0,0;
+     -18,31,0,-13;
+     0,0,22,-22;
+     0,-13,-22,35;];
+
+for i = 1:1
+ B(1,i+1)= (B(1,i)+ (1/1)*(v2(1,i)-v1(1,i)));
+ B(2,i+1)= (B(2,i)+ (1/1)*(v2(2,i)-v1(2,i))+(1/1)*(v2(2,i)-v4(2,i))); 
+ B(4,i+1)= (B(4,i)+ (1/1)*(v2(4,i)-v4(4,i)));
+
+fun2 = @(y)(((1*0+(2)*((1/1)*(y(2)-v2(1,i))^2+(y(3)-v2(2,i))^2+(y(4)-v2(3,i))^2)+0.00001*(PRESOVP2-y(9))+(1/1)*y(2)*(v2(1,i)-(v1(1,i)))+(1/1)*y(3)*(v2(2,i)-(v1(2,i)+v4(2,i))/2)+(1/1)*y(4)*(v2(4,i)-v4(4,i)))+B(1,i+1)*y(2)+B(2,i+1)*y(3)+B(4,i+1)*y(4)));                
+A = [];
+b = [];
+Aeq = [1, 0   ,0    ,0 , 0, -1,0,0,1,0;
+       0,G(2,1),G(2,2),G(2,4),-1,0,0,0,0,0;
+       0,-1,    1,     0,    0,0,1*(1/G(2,1)),0,0,0;
+       0,0,    1, -1,   0,    0,0,1*(1/G(2,4)),0,0;
+       %0,0,0,0,0,0,0,0,0,1 
+       % 0,1,0,0,0,0,0,0;
+   % 0,1,0,0,0,0,0,0;
+     ];
+beq = [0;0;0;0];
+lb= [0,0.92,0.92,0.92,(-3*Iijmax),-1,(-1*Iijmax),(-1*Iijmax),0-0.05,0];
+ub= [0,1.1,1.1,1.1,(3*Iijmax),1,(1*Iijmax),(1*Iijmax),PRESOVP2+0.05,TSO_choice*PRESTOTAL];
+nonlcon = @cofun2;
+y0 = [0,1,1,1,0,0,0,0,0,0];
+options = optimoptions(@fmincon,'Algorithm','sqp');
+[y,exitflag] = fmincon(fun2,y0,A,b,Aeq,beq,lb,ub,nonlcon,options)
+y
+exitflag
+v2(1,i+1)=y(2);
+v2(2,i+1)=y(3);
+%v2(3,i+1)=y(4);
+v2(4,i+1)=y(4);
+PG2=y(1);
+PL2 = y(10)
+C1=B(:,i+1);
+I21(1,i+1) = y(7);
+%I23(1,i+1)= y(9);
+I24(1,i+1)= y(8);
+RESOVP2 = y(9)
+% [v1,PG1]=bus1(v2,v3,v4);
+% [v3,PG3]=bus3(v1,v2,v4);
+% [v4,PG4]=bus4(v1,v2,v3);
+end
+ end
