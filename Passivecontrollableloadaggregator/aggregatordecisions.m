@@ -1,4 +1,4 @@
-Celphev=0.048;
+Celphev=60/1000;
 Ephevinit = 10/1000;
 Estorinit=0.01;
 Pphevmax=0.1;
@@ -11,12 +11,12 @@ control_flex= 0.1;
 c = 0.04;
 PphevcurrentSOC= 0.07;
 Pphevflex=Pphevmax-PphevcurrentSOC;
-P=-0.04 ;% positive if we want to augment the load and negative if we want to shed the load
+P=0.04 ;% positive if we want to augment the load and negative if we want to shed the load
 %The constraint for this program is that the power shifted has to be the
 %same or switching off loads must be higher or equal than the switching on loads
 %amount in some specified period of time(24H)
 % Here c has the same value to make sure that the controllable load is shifted with the same amount as is augmented later in a 24h period.
-[Ploadshed,Ploadadd,rlshed,rladd,Pphevadd]=battery_soc(P,control_flex,Pphevflex)
+[Ploadshed,Ploadadd,rlshed,rladd,Pphevshed]=battery_soc(P,control_flex,Pphevflex)
 % for i= 1:20
 %     Pload(i,1)= i*(0.050)-0;
 %     Pres(i,1)=0.6*Pnodemax;

@@ -1,4 +1,4 @@
-function[Ploadshed,Ploadadd,rlshed,rladd,Pphevadd]=battery_soc(P,control_flex,Pphevflex)
+function[Ploadshed,Ploadadd,rlshed,rladd,Pphevshed]=battery_soc(P,control_flex,Pphevflex)
 
     fun1 = @(x)(10000*(P-x(3)*(x(1)+x(5))-x(2)*x(4))^2+10000*(x(1)+x(5)-P)^2+1*(x(2)-P)^2)
 A = [];
@@ -15,11 +15,11 @@ options = optimoptions(@fmincon,'Algorithm','interior-point','MaxFunEvals',60000
 x
 exitflag
 
-Ploadadd=x(1);
-Ploadshed=x(2);
-rladd=x(3);
-rlshed=x(4);
-Pphevadd=x(5);
+Ploadshed=x(1);
+Ploadadd=x(2);
+rlshed=x(3);
+rladd=x(4);
+Pphevshed=x(5)
 % v1(1,i+1)=x(2);
 % v1(2,i+1)=x(3);           
 % v1(4,i+1)=x(4);
